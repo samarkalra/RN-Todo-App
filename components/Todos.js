@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddTodo from './AddTodo';
 import TodoItem from './TodoItem';
 
 const Todos = () => {
-    const [todos, setTodos] = useState([
-        { text: 'buy coffee', key: 1 },
-        { text: 'create an app', key: 2 },
-        { text: 'play on the switch', key: 3 }
-    ]);
-    const deleteTodo = (todoToDelete) => {
-        setTodos(todos.filter(todo => todo.key !== todoToDelete.key))
+    const [todos, setTodos] = useState([]);
+
+    const deleteTodo = async (todoToDelete) => {
+        const newTodos = todos.filter(todo => todo.key !== todoToDelete.key);
+        await AsyncStorage.setItem('todos', JSON.stringify({
+            todosList: newTodos
+        }));
+        setTodos(newTodos);
     }
-    const addTodo = (todoText) => {
+
+    const addTodo = async (todoText) => {
         const newTodo = {
             text: todoText,
             key: todos.length + 1
         }
-        setTodos([newTodo, ...todos]);
+        const newTodos = [newTodo, ...todos];
+        await AsyncStorage.setItem('todos', JSON.stringify({
+            todosList: newTodos
+        }));
+        setTodos(newTodos);
     }
+
+    useEffect(async () => {
+        let localTodos = await AsyncStorage.getItem('todos');
+        if (localTodos) {
+            localTodos = JSON.parse(localTodos);
+            if (localTodos.todosList.length > 0) {
+                setTodos(localTodos.todosList);
+            }
+        }
+    }, []);
+
     return (
         <View style={styles.content}>
             <AddTodo addTodo={addTodo} />
