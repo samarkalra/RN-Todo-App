@@ -1,12 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useDispatch } from 'react-redux';
+import { deleteTodo } from '../Redux/todoSlice';
 
-const TodoItem = ({ item, deleteTodo }) => {
+const TodoItem = ({ item }) => {
+    const dispatch = useDispatch();
+
+    const handleTodoDelete = (key) => {
+        dispatch(deleteTodo({ key }));
+    }
     return (
         <View style={styles.todoContainer}>
             <Text>{item.text}</Text>
-            <TouchableOpacity onPress={() => { deleteTodo(item) }}>
+            <TouchableOpacity onPress={() => handleTodoDelete(item.key)}>
                 <Icon
                     name='delete'
                     size={25}
