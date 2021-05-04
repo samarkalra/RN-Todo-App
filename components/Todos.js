@@ -1,52 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddTodo from './AddTodo';
-import TodoItem from './TodoItem';
+import TodoList from './TodoList';
+import { useSelector } from 'react-redux';
 
 const Todos = () => {
-    const [todos, setTodos] = useState([]);
-
-    const deleteTodo = async (todoToDelete) => {
-        const newTodos = todos.filter(todo => todo.key !== todoToDelete.key);
-        await AsyncStorage.setItem('todos', JSON.stringify({
-            todosList: newTodos
-        }));
-        setTodos(newTodos);
-    }
-
-    const addTodo = async (todoText) => {
-        const newTodo = {
-            text: todoText,
-            key: todos.length + 1
-        }
-        const newTodos = [newTodo, ...todos];
-        await AsyncStorage.setItem('todos', JSON.stringify({
-            todosList: newTodos
-        }));
-        setTodos(newTodos);
-    }
-
-    useEffect(async () => {
-        let localTodos = await AsyncStorage.getItem('todos');
-        if (localTodos) {
-            localTodos = JSON.parse(localTodos);
-            if (localTodos.todosList.length > 0) {
-                setTodos(localTodos.todosList);
-            }
-        }
-    }, []);
-
+    const todos = useSelector(state => state.todo.todos);
     return (
         <View style={styles.content}>
-            <AddTodo addTodo={addTodo} />
+            <AddTodo />
             <View style={styles.list}>
-                <FlatList
-                    data={todos}
-                    renderItem={({ item }) => (
-                        <TodoItem item={item} deleteTodo={deleteTodo} />
-                    )}
-                />
+                {todos.length > 0 ?
+                    <TodoList todos={todos} />
+                    : <Text style={styles.emptyTodoText}>No todos to show</Text>
+                }
             </View>
         </View>
     );
@@ -60,6 +32,9 @@ const styles = StyleSheet.create({
     list: {
         flex: 1,
         marginTop: 40
+    },
+    emptyTodoText: {
+        alignSelf: 'center',
     }
 });
 
