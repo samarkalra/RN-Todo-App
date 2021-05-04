@@ -1,8 +1,18 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, Alert } from 'react-native';
+import {
+    View,
+    TextInput,
+    Button,
+    StyleSheet,
+    Alert
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { addTodo } from '../Redux/todoSlice';
 
-const AddTodo = ({ addTodo }) => {
+const AddTodo = () => {
     const [todoText, setTodoText] = useState('');
+    const dispatch = useDispatch();
+
     const handleTodoAdd = () => {
         if (todoText.length <= 3) {
             Alert.alert('OOPS!', 'Todo must be over 3 chars long',
@@ -14,10 +24,11 @@ const AddTodo = ({ addTodo }) => {
                 ]
             );
         } else {
-            addTodo(todoText);
+            dispatch(addTodo({ text: todoText }));
             setTodoText('');
         }
     }
+
     return (
         <View>
             <TextInput
@@ -29,7 +40,7 @@ const AddTodo = ({ addTodo }) => {
             <Button
                 title='add todo'
                 color='coral'
-                onPress={() => { handleTodoAdd() }}
+                onPress={() => handleTodoAdd()}
             ></Button>
         </View>
     );
