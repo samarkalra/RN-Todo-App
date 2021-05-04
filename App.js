@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard
+} from 'react-native';
 import Header from './components/Header';
 import Todos from './components/Todos';
+import store from './Redux/store';
+import { Provider } from 'react-redux';
 
 const App = () => {
   return (
-    <TouchableWithoutFeedback onPress={() => {
-      Keyboard.dismiss();
-    }}>
-      <View style={styles.container}>
-        <Header title='My Todos' />
-        <Todos />
-      </View>
-    </TouchableWithoutFeedback>
+    <Provider store={store}>
+      <TouchableWithoutFeedback onPress={() => {
+        Keyboard.dismiss();
+      }}>
+        <View style={styles.container}>
+          <Header title='My Todos' />
+          <Todos />
+        </View>
+      </TouchableWithoutFeedback>
+    </Provider>
   );
 };
 
