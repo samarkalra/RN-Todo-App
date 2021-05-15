@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Text, Button, StyleSheet, Alert } from 'react-native';
+import { 
+    View, 
+    TextInput, 
+    Button, 
+    StyleSheet, 
+    Alert 
+} from 'react-native';
 
 const AddTodo = ({ addTodo }) => {
     const [todoText, setTodoText] = useState('');
@@ -29,7 +35,7 @@ const AddTodo = ({ addTodo }) => {
             <Button
                 title='add todo'
                 color='coral'
-                onPress={() => { handleTodoAdd() }}
+                onPress={handleTodoAdd}
             ></Button>
         </View>
     );

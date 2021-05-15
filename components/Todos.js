@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { 
+    View, 
+    Text, 
+    FlatList, 
+    StyleSheet 
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddTodo from './AddTodo';
 import TodoItem from './TodoItem';
@@ -40,6 +45,11 @@ const Todos = () => {
     return (
         <View style={styles.content}>
             <AddTodo addTodo={addTodo} />
+            {!todos.length ?
+            <View style={styles.noTodoTextContainer}>
+                <Text style={styles.noTodoText}>No Todo Item to show!</Text>
+            </View>
+            :
             <View style={styles.list}>
                 <FlatList
                     data={todos}
@@ -48,6 +58,7 @@ const Todos = () => {
                     )}
                 />
             </View>
+            }
         </View>
     );
 }
@@ -55,7 +66,15 @@ const Todos = () => {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
-        padding: 40
+        padding: 40,
+    },
+    noTodoTextContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noTodoText: {
+        fontSize: 16
     },
     list: {
         flex: 1,
