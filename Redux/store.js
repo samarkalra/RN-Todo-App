@@ -4,6 +4,7 @@ import {
     getDefaultMiddleware,
 } from '@reduxjs/toolkit';
 import todoReducer from './todoSlice';
+import visibilityFilterReducer from './visibilityFilterSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import {
@@ -18,11 +19,11 @@ import {
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whiteList: ['todos'],
 }
 
 const rootReducer = combineReducers({
     todo: persistReducer(persistConfig, todoReducer),
+    visibleFilter: persistReducer(persistConfig, visibilityFilterReducer),
 });
 
 export const store = configureStore({

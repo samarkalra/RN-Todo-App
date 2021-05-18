@@ -30,7 +30,7 @@ const AddTodo = () => {
     }
 
     return (
-        <View>
+        <View style={{marginBottom: 12}}>
             <TextInput
                 style={styles.input}
                 placeholder='new todo...'

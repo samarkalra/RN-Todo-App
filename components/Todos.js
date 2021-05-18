@@ -4,19 +4,30 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import AddTodo from './AddTodo';
 import TodoList from './TodoList';
+import FilterMenu from './FilterMenu';
 import { useSelector } from 'react-redux';
 
 const Todos = () => {
-    const todos = useSelector(state => state.todo.todos);
+    const allTodos = useSelector(state => state.todo.todos);
+    const filter = useSelector(state => state.visibleFilter.filter);
+    let visibleTodos = [];
+    if(filter==='ACTIVE') {
+        visibleTodos = allTodos.filter(todo => !todo.isCompleted);
+    } else if(filter==='COMPLETED') {
+        visibleTodos = allTodos.filter(todo => todo.isCompleted);
+    } else {
+        visibleTodos = allTodos;
+    }
+
     return (
         <View style={styles.content}>
             <AddTodo />
+            <FilterMenu />
             <View style={styles.list}>
-                {todos.length > 0 ?
-                    <TodoList todos={todos} />
+                {visibleTodos.length > 0 ?
+                    <TodoList todos={visibleTodos} />
                     : <Text style={styles.emptyTodoText}>No todos to show</Text>
                 }
             </View>

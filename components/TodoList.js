@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList } from 'react-native';
 import TodoItem from './TodoItem';
 
 const TodoList = ({ todos }) => {
